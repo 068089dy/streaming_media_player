@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryDark"
+    app:bbn_itemColorActive="@android:color/white"
+    app:bbn_itemColorDisabled="#33ffffff"
+    app:bbn_itemColorInactive="#99ffffff"
+    app:bbn_rippleColor="#ccffffff">
+    <item
+        android:id="@+id/bbn_item1"
+        android:icon="@drawable/ic_cloud_off_white_24dp"
+        android:title="Cloud Sync" />
+    <item
+        android:id="@+id/bbn_item2"
+        android:icon="@drawable/ic_cast_connected_white_24dp"
+        android:title="Chromecast" />
+    <item
+        android:id="@+id/bbn_item3"
+        android:icon="@drawable/ic_mail_white_24dp"
+        android:title="Mail" />
+</menu>
