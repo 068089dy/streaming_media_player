@@ -1,10 +1,16 @@
-用[这里](https://github.com/upyun/android-player-sdk)的sdk实现转播斗鱼直播平台的直播视频。
+# 实现转播斗鱼直播平台的直播视频。
 ## 1.android-player-sdk-master
-原工程文件
+播放器原工程文件：[这里](https://github.com/upyun/android-player-sdk)
 ## 2.import_demo
-导入的demo
+播放器sdk导入的demo
+需要注意的地方
+1.权限
+2.gradle
+3.jniLibs文件夹导入
 ## 3.Material-BottomNavigation-master
 [这里](https://github.com/sephiroth74/Material-BottomNavigation)的底部导航菜单demo
+## 4.MyApplication2
+一个未成形的demo
 ## 抓取斗鱼直播源的方法,斗鱼不定时会变,来自[这里](https://github.com/littleMeng/video-live)
 ==== 2017.3.16测试有效 ====
 ```
@@ -87,3 +93,9 @@ public static String strToMd5Low32(String str) {
 }
 
 ```
+
+
+## 反编译笔记
+blog.csdn.net/guolin_blog/article/details/49738023
+ubuntu下安转jd-gui是依赖：
+sudo apt-get install libgtk2.0-0:i386 libxxf86vm1:i386 libsm6:i386 lib32stdc++6

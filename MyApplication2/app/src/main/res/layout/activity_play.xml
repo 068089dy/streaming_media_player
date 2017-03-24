@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dy.cardviewdemo1.ui.PlayActivity">
+
+    <com.upyun.upplayer.widget.UpVideoView
+        android:id="@+id/uvw_video"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+         />
+    <RelativeLayout
+        android:id="@+id/onplay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/im_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="20dp"
+            android:src="@drawable/back"/>
+        <TextView
+            android:id="@+id/roominfo"
+            android:paddingTop="20dp"
+            android:text="qweqweqweqwe"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/im_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/im_play"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:padding="20dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/play"/>
+
+        <ImageView
+            android:id="@+id/im_resume"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/resume"/>
+
+
+        </RelativeLayout>
+</RelativeLayout>
