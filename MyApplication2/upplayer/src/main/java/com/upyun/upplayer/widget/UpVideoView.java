@@ -1026,21 +1026,29 @@ public class UpVideoView extends FrameLayout implements MediaController.MediaPla
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            //Window window = activity.getWindow();
-            //WindowManager.LayoutParams params = window.getAttributes();
-            //params.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE;
-            //activity.getWindow().setAttributes(params);
+            Window window = activity.getWindow();
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            activity.getWindow().setAttributes(params);
 
             DisplayMetrics metrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
             mRawParams = getLayoutParams();
             ViewGroup.LayoutParams fullParams;
             if (mRawParams instanceof RelativeLayout.LayoutParams) {
-                fullParams = new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                //fullParams = new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                fullParams = new RelativeLayout.LayoutParams(getScreenSize(activity)[0], getScreenSize(activity)[1]);
             } else if (mRawParams instanceof LinearLayout.LayoutParams) {
-                fullParams = new LinearLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                //fullParams = new LinearLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                fullParams = new LinearLayout.LayoutParams(getScreenSize(activity)[0], getScreenSize(activity)[1]);
             } else if (mRawParams instanceof FrameLayout.LayoutParams) {
-                fullParams = new FrameLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                //fullParams = new FrameLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels);
+                fullParams = new FrameLayout.LayoutParams(getScreenSize(activity)[0], getScreenSize(activity)[1]);
             } else {
                 new AlertDialog.Builder(getContext())
                         .setMessage("nonsupport parent layout, please do it by yourself")
@@ -1056,6 +1064,15 @@ public class UpVideoView extends FrameLayout implements MediaController.MediaPla
             setLayoutParams(fullParams);
             isFullState = true;
         }
+    }
+
+    public int[] getScreenSize(Activity activity){
+        int screenSize[] = new int[2];
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenSize[0] = displayMetrics.widthPixels;
+        screenSize[1] = displayMetrics.heightPixels;
+        return screenSize;
     }
 
     public void exitFullScreen(Activity activity) {

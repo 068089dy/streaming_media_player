@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dy.myapplication.ui.ui.Activity.FullScreenActivity"
+    android:fitsSystemWindows="true">
+    <com.upyun.upplayer.widget.UpVideoView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/up_full_video"/>
+    <RelativeLayout
+        android:id="@+id/onplay_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/im_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/back"
+            />
+        <ImageView
+            android:id="@+id/im_play"
+            android:src="@drawable/pause"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            />
+        <ImageView
+            android:id="@+id/im_resume"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/resume"/>
+        <ImageView
+            android:id="@+id/im_full"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/fullscreen"/>
+    </RelativeLayout>
+</RelativeLayout>
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context="com.example.dy.myapplication.ui.ui.Activity.IdcardActivity">
+<RelativeLayout
+    android:id="@+id/video_layout"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.upyun.upplayer.widget.UpVideoView
+        android:id="@+id/up_full_video"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        />
+    <RelativeLayout
+        android:id="@+id/onplay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/im_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/back"
+            />
+        <ImageView
+            android:id="@+id/im_play"
+            android:src="@drawable/pause"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            />
+        <ImageView
+            android:id="@+id/im_resume"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/resume"/>
+        <ImageView
+            android:id="@+id/im_full"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/fullscreen"/>
+    </RelativeLayout>
+</RelativeLayout>
+
+<RelativeLayout
+    android:layout_weight="5"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/id_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e15151"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        >
+        <android.support.design.widget.CoordinatorLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentScrim="@color/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingLeft="30dp"
+                        android:background="#FF424242"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="left"
+                            android:src="@drawable/head"
+                            app:border_color="@android:color/white"
+                            app:border_width="2dp"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="10dp"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:text="主播：陈一发"
+                                android:textColor="#f94a4a"
+                                android:textSize="20dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="房间号：12345"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <br.tiagohm.markdownview.MarkdownView
+                    android:background="@color/cardview_dark_background"
+                    android:id="@+id/tx_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:escapeHtml="false"/>
+                />
+
+            </android.support.v4.widget.NestedScrollView>
+
+
+        </android.support.design.widget.CoordinatorLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
+</LinearLayout>

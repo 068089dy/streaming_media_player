@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dy.imagedemo.HeadPagerFragment">
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sr_layout">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/favorite_recycleview"
         android:layout_width="match_parent"
@@ -13,4 +16,5 @@
         >
 
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

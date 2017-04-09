@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.tiagohm'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 25
+        versionCode 1
+        versionName "0.11.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.vladsch.flexmark:flexmark:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-tables:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-gfm-tasklist:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-autolink:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-abbreviation:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-superscript:0.18.2'
+    compile 'com.vladsch.flexmark:flexmark-ext-footnotes:0.18.2'
+    compile 'com.orhanobut:logger:1.15'
+}

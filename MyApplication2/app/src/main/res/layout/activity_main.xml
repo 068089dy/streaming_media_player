@@ -1,22 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:background="#7e424242"
+        android:layout_height="?attr/actionBarSize"
+        app:title="斗鱼tv"
+        app:subtitle="斗鱼tv"
+        app:layout_collapseMode="pin"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.dy.myapplication.MainActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    -->
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/content"
 
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-
-
-    </FrameLayout>
+            >
+        </FrameLayout>
+    <!--
+    </android.support.v4.widget.NestedScrollView>-->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -26,6 +61,8 @@
         android:background="?android:attr/windowBackground"
         app:itemIconTint="#c14747"
         app:itemTextColor="#c14747"
+        app:layout_behavior="com.example.dy.myapplication.ui.ui.behavior.MyBottomBarBehavior"
         app:menu="@menu/navigation" />
+    </LinearLayout>
+<!--</android.support.design.widget.CoordinatorLayout>-->
 
-</LinearLayout>

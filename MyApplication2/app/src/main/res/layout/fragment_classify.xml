@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dy.imagedemo.ClassifyFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe_ly1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    <com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView
+        android:id="@+id/RecyclerView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="afaasd" />
+        android:clickable="false"
+        android:scrollbars="vertical"
+        >
+        </com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

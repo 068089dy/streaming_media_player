@@ -1,1 +1,1 @@
-include ':app', ':ijkplayer-java', ':upplayer'
+include ':app', ':ijkplayer-java', ':upplayer', ':emoji', ':library', ':pullloadmorerecyclerview'

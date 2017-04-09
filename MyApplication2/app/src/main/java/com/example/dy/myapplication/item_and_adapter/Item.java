@@ -8,10 +8,17 @@ public class Item {
 
     private String imagesrc;
     private String roomid;
+    private String anchor;
 
-    public Item(String imagesrc,String roomid){
+    private int online;
+
+    public Item(String imagesrc,String roomid,String anchor,int online){
         this.imagesrc = imagesrc;
         this.roomid = roomid;
+        this.anchor = anchor;
+
+        this.online = online;
+
     }
 
     public String getRoomid(){
@@ -20,5 +27,13 @@ public class Item {
 
     public String getImageSrc(){
         return imagesrc;
+    }
+
+    public String getAnchor(){
+        return anchor;
+    }
+
+    public int getOnline(){
+        return online;
     }
 }
