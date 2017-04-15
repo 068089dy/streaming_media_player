@@ -15,11 +15,55 @@ import com.example.dy.myapplication.ui.ui.fragment.ClassifyFragment;
 import com.example.dy.myapplication.ui.ui.fragment.FavoriteFragment;
 import com.example.dy.myapplication.ui.ui.fragment.HeadFragment;
 import com.example.dy.myapplication.ui.ui.fragment.HeadPager.HeadPagerFragment;
+import com.example.dy.myapplication.util.share;
+
+import static com.example.dy.myapplication.common.data.FAVORITE_KEY;
+import static com.example.dy.myapplication.common.data.favoritelist;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private FrameLayout m_frameLayout;
+
+    public static MainActivity mainActivity;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+        mainActivity = this;
+        initview();
+        initdata();
+    }
+
+    private void initview(){
+        m_frameLayout= (FrameLayout) findViewById(R.id.content);
+        //mTextMessage = (TextView) findViewById(R.id.message);
+
+        //通过fragments这个adapter还有index来替换帧布局中的内容
+        Fragment fragment = (Fragment) fragments.instantiateItem(m_frameLayout, 0);
+        //一开始将帧布局中 的内容设置为第一个
+        fragments.setPrimaryItem(m_frameLayout, 0, fragment);
+        fragments.finishUpdate(m_frameLayout);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void initdata(){
+        String data = share.getString(this,FAVORITE_KEY);
+        if(data!=null&&!data.equals("")) {
+            String roomid[] = data.split("|");
+            int i = 0;
+            while (roomid[i] != null&&roomid[i].equals("")) {
+                favoritelist.add(roomid[i]);
+                i++;
+            }
+        }
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -68,24 +112,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
-
-        m_frameLayout= (FrameLayout) findViewById(R.id.content);
-        //mTextMessage = (TextView) findViewById(R.id.message);
-
-        //通过fragments这个adapter还有index来替换帧布局中的内容
-        Fragment fragment = (Fragment) fragments.instantiateItem(m_frameLayout, 0);
-        //一开始将帧布局中 的内容设置为第一个
-        fragments.setPrimaryItem(m_frameLayout, 0, fragment);
-        fragments.finishUpdate(m_frameLayout);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
 
     //用adapter来管理Fragment界面的变化。这里用的Fragment都是v4包里面的
     FragmentStatePagerAdapter fragments = new FragmentStatePagerAdapter(getSupportFragmentManager()) {

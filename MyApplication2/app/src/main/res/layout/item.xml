@@ -33,11 +33,12 @@
             <TextView
                 android:id="@+id/title1"
                 android:text="asdasdasd"
+
                 android:textSize="12sp"
                 android:textColor="#000000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent" />
+                android:background="#FFFFFF" />
 
             <TextView
                 android:id="@+id/anthor"
@@ -47,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@android:color/transparent" />
+                android:background="#FFFFFF" />
 
             <TextView
                 android:id="@+id/online"
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@android:color/transparent" />
+                android:background="#FFFFFF" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

@@ -18,12 +18,20 @@ import android.widget.Toast;
 import com.example.dy.myapplication.NetworkRequestImpl;
 import com.example.dy.myapplication.R;
 import com.example.dy.myapplication.UrlListener;
+import com.example.dy.myapplication.util.share;
 import com.example.dy.myapplication.util.window_method;
 import com.upyun.upplayer.widget.UpVideoView;
+
+import java.util.Iterator;
 
 import br.tiagohm.markdownview.MarkdownView;
 import br.tiagohm.markdownview.css.InternalStyleSheet;
 import br.tiagohm.markdownview.css.styles.Github;
+
+import static com.example.dy.myapplication.common.data.FAVORITE_KEY;
+import static com.example.dy.myapplication.common.data.favoritelist;
+import static com.example.dy.myapplication.ui.ui.Activity.MainActivity.mainActivity;
+import static com.example.dy.myapplication.util.share.*;
 
 public class IdcardActivity extends AppCompatActivity {
     private UpVideoView upVideoView;
@@ -39,6 +47,9 @@ public class IdcardActivity extends AppCompatActivity {
     private ImageView im_resume;
     private ImageView im_full;
     private TextView tv_window;
+    private ImageView im_favorite;
+
+    Boolean is_favorite = false;
 
     private RelativeLayout onplay_layout;
     private CardView id_card_view;
@@ -90,10 +101,19 @@ public class IdcardActivity extends AppCompatActivity {
         im_resume = (ImageView) findViewById(R.id.im_resume);
         im_full = (ImageView) findViewById(R.id.im_full);
         tv_window = (TextView) findViewById(R.id.tv_window);
+        im_favorite = (ImageView) findViewById(R.id.im_favorite);
+
         onplay_layout = (RelativeLayout) findViewById(R.id.onplay_layout);
         id_card_view = (CardView) findViewById(R.id.id_card_view);
 
-
+        //判断是否关注
+        Iterator<String> it = favoritelist.iterator();
+        while(it.hasNext()){
+            if(it.next().equals(Integer.toString(roomid))){
+                is_favorite = true;
+                im_favorite.setImageResource(R.drawable.favorite2);
+            }
+        }
 
     }
 
@@ -187,6 +207,20 @@ public class IdcardActivity extends AppCompatActivity {
                 intent.putExtra("url",live_url);
                 startActivity(intent);
                 */
+                }
+            }
+        });
+
+        im_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(is_favorite){
+
+                }else{
+                    im_favorite.setImageResource(R.drawable.favorite2);
+                    favoritelist.add(Integer.toString(roomid));
+                    putString(mainActivity,FAVORITE_KEY, share.getString(mainActivity,FAVORITE_KEY)+Integer.toString(roomid)+"|");
+                    is_favorite = true;
                 }
             }
         });

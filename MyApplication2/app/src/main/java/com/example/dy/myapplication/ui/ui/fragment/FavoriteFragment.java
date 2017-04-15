@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.dy.myapplication.R;
+import com.example.dy.myapplication.common.data;
 import com.example.dy.myapplication.item_and_adapter.favorite_item;
 import com.example.dy.myapplication.item_and_adapter.favorite_item_adapter;
 
@@ -83,7 +84,9 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         adapter = new favorite_item_adapter(view.getContext(),itemList);
         mRecyclerView.setAdapter(adapter);
-        List<Integer> list = new ArrayList<Integer>();
+        List<String> list = new ArrayList<String>();
+        list = data.favoritelist;
+        /*添加新闻
         list.add(78561);
         list.add(156277);
         list.add(138286);
@@ -92,7 +95,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         list.add(666199);
         list.add(1275878);
         list.add(67373);
-        /*添加新闻
+
         newsList.add(new News("78561","雪哥"));
         newsList.add(new News("156277","nvliu"));
         newsList.add(new News("138286","55kai"));
@@ -103,9 +106,9 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         */
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
-        Iterator<Integer> it = list.iterator();
+        Iterator<String> it = list.iterator();
         while(it.hasNext()) {
-            final int roomid1 = it.next();
+            final String roomid1 = it.next();
             StringRequest stringRequest = new StringRequest("https://m.douyu.com/html5/live?roomId=" + roomid1,
                     new Response.Listener<String>() {
                         @Override
@@ -125,7 +128,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 }
                                 String nickname = jsonObject1.getString("nickname");
 
-                                itemList.add(new favorite_item(vertical_src,Integer.toString(roomid1),nickname,is_show,online));
+                                itemList.add(new favorite_item(vertical_src,roomid1,nickname,is_show,online));
                                 adapter.notifyDataSetChanged();
                             } catch (Exception e) {
 
