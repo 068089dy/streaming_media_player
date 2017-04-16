@@ -93,7 +93,66 @@ public static String strToMd5Low32(String str) {
 }
 
 ```
+## 抓取熊猫直播源的方法
 
+'''
+public void getPandaStream(final int roomId, final UrlListener urlListener){
+        String url = "http://api.homer.panda.tv/chatroom/getinfo?roomid="+roomId;
+        //获取roominfo
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String data1 = jsonObject.getString("data");
+                    JSONObject jsonObject1 = new JSONObject(data1);
+                    final String ts = jsonObject1.getString("ts");
+                    final String sign = jsonObject1.getString("sign");
+                    final String rid = jsonObject1.getString("rid");
+                    String api_url = "http://www.panda.tv/api_room_v2?roomid="+roomId+"&_="+ts;
+
+                    //获取room_key
+                    RequestQueue mRequestQueue1 = Volley.newRequestQueue(mContext);
+                    StringRequest request1 = new StringRequest(Request.Method.GET, api_url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                String data1 = jsonObject.getString("data");
+                                jsonObject = new JSONObject(data1);
+                                String videoinfo = jsonObject.getString("videoinfo");
+                                jsonObject = new JSONObject(videoinfo);
+                                String stream_addr = jsonObject.getString("stream_addr");
+                                jsonObject = new JSONObject(stream_addr);
+                                String roomkey = jsonObject.getString("room_key");
+                                String live_url = "http://p17.live.panda.tv/live_panda/"+roomkey+".flv?sign="+sign+"&time=&ts="+ts+"&rid="+rid;
+                                urlListener.onSuccess(live_url);
+                            }catch(Exception e){
+                                urlListener.onError();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            urlListener.onError();
+                        }
+                    });
+                    mRequestQueue1.add(request1);
+
+                }catch (Exception e){
+                    urlListener.onError();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                urlListener.onError();
+            }
+        });
+        mRequestQueue.add(request);
+    }
+'''
 
 ## 反编译笔记
 blog.csdn.net/guolin_blog/article/details/49738023
