@@ -95,7 +95,7 @@ public static String strToMd5Low32(String str) {
 ```
 ## 抓取熊猫直播源的方法
 
-'''
+```
 public void getPandaStream(final int roomId, final UrlListener urlListener){
         String url = "http://api.homer.panda.tv/chatroom/getinfo?roomid="+roomId;
         //获取roominfo
@@ -152,9 +152,13 @@ public void getPandaStream(final int roomId, final UrlListener urlListener){
         });
         mRequestQueue.add(request);
     }
-'''
+```
 
 ## 反编译笔记
+```
 blog.csdn.net/guolin_blog/article/details/49738023
+```
 ubuntu下安转jd-gui是依赖：
+```
 sudo apt-get install libgtk2.0-0:i386 libxxf86vm1:i386 libsm6:i386 lib32stdc++6
+```
