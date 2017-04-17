@@ -12,7 +12,7 @@
 ## 4.MyApplication2
 一个未成形的demo
 ## 抓取斗鱼直播源的方法,斗鱼不定时会变,来自[这里](https://github.com/littleMeng/video-live)
-==== 2017.3.16测试有效 ====
+==== 2017.4.7测试有效 ====
 ```
 public void getStreamUrl(final int roomId) {
   //get请求地址
@@ -96,7 +96,8 @@ public static String strToMd5Low32(String str) {
 ## 抓取熊猫直播源的方法
 
 ```
-public void getPandaStream(final int roomId, final UrlListener urlListener){
+== 2017.4.7更新 ==
+public String getPandaStream(final int roomId, final UrlListener urlListener){
         String url = "http://api.homer.panda.tv/chatroom/getinfo?roomid="+roomId;
         //获取roominfo
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -110,7 +111,7 @@ public void getPandaStream(final int roomId, final UrlListener urlListener){
                     final String sign = jsonObject1.getString("sign");
                     final String rid = jsonObject1.getString("rid");
                     String api_url = "http://www.panda.tv/api_room_v2?roomid="+roomId+"&_="+ts;
-
+                    System.out.println("pandaurl:"+api_url);
                     //获取room_key
                     RequestQueue mRequestQueue1 = Volley.newRequestQueue(mContext);
                     StringRequest request1 = new StringRequest(Request.Method.GET, api_url, new Response.Listener<String>() {
@@ -119,35 +120,40 @@ public void getPandaStream(final int roomId, final UrlListener urlListener){
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String data1 = jsonObject.getString("data");
+                                //System.out.println("pandaurl:"+data1);
                                 jsonObject = new JSONObject(data1);
                                 String videoinfo = jsonObject.getString("videoinfo");
+                                //System.out.println("videoinfo:"+videoinfo);
                                 jsonObject = new JSONObject(videoinfo);
-                                String stream_addr = jsonObject.getString("stream_addr");
-                                jsonObject = new JSONObject(stream_addr);
                                 String roomkey = jsonObject.getString("room_key");
-                                String live_url = "http://p17.live.panda.tv/live_panda/"+roomkey+".flv?sign="+sign+"&time=&ts="+ts+"&rid="+rid;
-                                urlListener.onSuccess(live_url);
+                                //System.out.println("room_key:"+roomkey);
+                                String plflag = jsonObject.getString("plflag");
+                                String plflag1 = plflag.split("_")[1];
+
+                                String live_url = "http://pl"+plflag1+".live.panda.tv/live_panda/"+roomkey+".flv?sign="+sign+"&time=&ts="+ts+"&rid="+rid;
+                                System.out.println("livepandaurl:"+live_url);
+                                return live_url;
                             }catch(Exception e){
-                                urlListener.onError();
+                                return "error";
                             }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            urlListener.onError();
+                            return "error";
                         }
                     });
                     mRequestQueue1.add(request1);
 
                 }catch (Exception e){
-                    urlListener.onError();
+                    return "error";
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                urlListener.onError();
+                return "error";
             }
         });
         mRequestQueue.add(request);
