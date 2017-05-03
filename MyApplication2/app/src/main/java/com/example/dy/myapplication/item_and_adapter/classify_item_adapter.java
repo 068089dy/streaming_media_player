@@ -35,7 +35,6 @@ public class classify_item_adapter extends RecyclerView.Adapter<classify_item_ad
     public classify_item_adapter(Context context,List<Item> list,LoadMoreRecyclerView mRecyclerView){
         this.context = context;
         this.list = list;
-
     }
 
 

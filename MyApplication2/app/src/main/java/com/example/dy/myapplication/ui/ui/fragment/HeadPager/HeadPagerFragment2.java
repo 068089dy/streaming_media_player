@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.dy.myapplication.R;
 import com.example.dy.myapplication.item_and_adapter.Item;
 import com.example.dy.myapplication.item_and_adapter.Item_Adapter;
+import com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,11 +34,12 @@ import java.util.List;
 
 public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    private RecyclerView mRecyclerView;
+    private LoadMoreRecyclerView mRecyclerView;
     private Item_Adapter adapter;
     private List<Item> list = new ArrayList<Item>();
     private SwipeRefreshLayout mSwipelayout;
-    private int add_data_num = 1;
+    private int add_data_num = 2;
+    GridLayoutManager gridLayoutManager;
     View view;
 
     public void onAttach(Activity activity) {
@@ -47,7 +49,7 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_head_pager,container,false);
+        view=inflater.inflate(R.layout.fragment_classify,container,false);
 
         initview();
         initdata();
@@ -64,14 +66,30 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
     }
 
     private void initview(){
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.GridView1);
+        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.RecyclerView1);
         adapter = new Item_Adapter(view.getContext(),list,mRecyclerView);
         mRecyclerView.setAdapter(adapter);
-        mSwipelayout = (SwipeRefreshLayout) view.findViewById(R.id.id_swipe_ly);
-        //mSwipelayout.setRefreshing(true);
+        //上拉加载。。。
+        mRecyclerView.setOnLoadingListener(new LoadMoreRecyclerView.onLoadingMoreListener() {
+            @Override
+            public void onLoading() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //list.clear();
+                        add_data();
+                        //mRecyclerView.scrollBy(0,(add_data_num-1)*20);
+                        adapter.notifyDataSetChanged();
+                        mRecyclerView.loadFinished();
+                        adapter.notifyItemRemoved(adapter.getItemCount());
+                    }
+                }, 0);
+            }
+        });
+        mSwipelayout = (SwipeRefreshLayout) view.findViewById(R.id.id_swipe_ly1);
         mSwipelayout.setOnRefreshListener(this);
 
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
+        gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
 
         //第一列单独占一行
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -90,6 +108,7 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void run() {
                 list.clear();
+                add_data_num = 2;
                 initdata();
                 // 设置SwipeRefreshLayout当前是否处于刷新状态，一般是在请求数据的时候设置为true，在数据被加载到View中后，设置为false。
                 mSwipelayout.setRefreshing(false);
@@ -100,7 +119,7 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
 
     private void initdata(){
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        StringRequest request = new StringRequest("http://capi.douyucdn.cn/api/v1/live?&limit=80",
+        StringRequest request = new StringRequest("http://capi.douyucdn.cn/api/v1/live/175?&limit=20",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -111,10 +130,8 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
                             for(int i = 0;i<jsonArray.length();i++){
                                 JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
                                 System.out.println(jsonObject1.getString("room_id"));
-                                list.add(new Item(jsonObject1.getString("vertical_src"),jsonObject1.getString("room_id"),jsonObject1.getString("nickname"),jsonObject1.getInt("online")));
+                                list.add(new Item(jsonObject1.getString("vertical_src"),"1001"+jsonObject1.getString("room_id"),jsonObject1.getString("nickname"),jsonObject1.getInt("online")));
                                 adapter.notifyDataSetChanged();
-                                //adapter = new Item_Adapter(view.getContext(),list,mRecyclerView);
-                                //mRecyclerView.setAdapter(adapter);
                             }
 
                         }catch(Exception e){
@@ -130,11 +147,42 @@ public class HeadPagerFragment2 extends Fragment implements SwipeRefreshLayout.O
         requestQueue.add(request);
     }
 
+    private void add_data(){
+
+        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+        StringRequest request = new StringRequest("http://capi.douyucdn.cn/api/v1/live/175?&limit="+add_data_num*20,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String data1 = jsonObject.getString("data");
+                            JSONArray jsonArray = new JSONArray(data1);
+                            for(int i = 0;i<jsonArray.length();i++){
+                                JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
+                                System.out.println(jsonObject1.getString("room_id"));
+                                if(i<list.size()){
+
+                                }else {
+                                    list.add(new Item(jsonObject1.getString("vertical_src"), "1001"+jsonObject1.getString("room_id"), jsonObject1.getString("nickname"), jsonObject1.getInt("online")));
+                                }
+
+                            }
+                            adapter.notifyDataSetChanged();
+                            mRecyclerView.smoothScrollBy(0,1000);
 
 
+                        }catch(Exception e){
 
-
-
-
-
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("房间号："+volleyError);
+            }
+        });
+        requestQueue.add(request);
+        add_data_num++;
+    }
 }

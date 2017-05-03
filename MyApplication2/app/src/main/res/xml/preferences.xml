@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><!--最新栏目的新闻-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:key="set_net"
+        android:title="网络设置" >
+        <CheckBoxPreference
+            android:key="set_3g"
+            android:summary="使用3G虽可提高数据载入速度，但可能会降低电池寿命"
+            android:title="启用3G"
+            android:widgetLayout="@layout/switch_layout"/>
+        <CheckBoxPreference
+            android:key="set_2g"
+            android:summaryOff="打开蜂窝数据"
+            android:summaryOn="关闭蜂窝数据"
+            android:title="蜂窝数据"
+            android:widgetLayout="@layout/switch_layout"/>
+        <Preference
+            android:key="set_2g_net"
+            android:title="蜂窝数据网络" />
+        <CheckBoxPreference
+            android:key="set_roving"
+            android:summary="在境外时请关闭数据漫游"
+            android:title="数据漫游"
+            android:widgetLayout="@layout/switch_layout"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="set_VPN_Category"
+        android:title="VPN设置" >
+        <Preference
+            android:key="set_VPN"
+            android:title="设置VPN"
+            android:widgetLayout="@layout/switch_layout"/>
+    </PreferenceCategory>
+</PreferenceScreen>

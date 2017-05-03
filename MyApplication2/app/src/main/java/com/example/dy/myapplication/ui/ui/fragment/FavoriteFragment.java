@@ -86,16 +86,7 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setAdapter(adapter);
         List<String> list = new ArrayList<String>();
         list = data.favoritelist;
-        /*添加新闻
-        list.add(78561);
-        list.add(156277);
-        list.add(138286);
-        list.add(867273);
-        list.add(24422);
-        list.add(666199);
-        list.add(1275878);
-        list.add(67373);
-
+        /*添加
         newsList.add(new News("78561","雪哥"));
         newsList.add(new News("156277","nvliu"));
         newsList.add(new News("138286","55kai"));
@@ -109,53 +100,50 @@ public class FavoriteFragment extends Fragment implements SwipeRefreshLayout.OnR
         Iterator<String> it = list.iterator();
         while(it.hasNext()) {
             final String roomid1 = it.next();
-            StringRequest stringRequest = new StringRequest("https://m.douyu.com/html5/live?roomId=" + roomid1,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String s) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                String data1 = jsonObject.getString("data");
-                                JSONObject jsonObject1 = new JSONObject(data1);
-                                String vertical_src = jsonObject1.getString("vertical_src");
-                                int online = jsonObject1.getInt("online");
-                                int show_status = jsonObject1.getInt("show_status");
-                                Boolean is_show = false;
-                                if (1==show_status){
-                                    is_show = true;
-                                }else{
-                                    is_show = false;
-                                }
-                                String nickname = jsonObject1.getString("nickname");
 
-                                itemList.add(new favorite_item(vertical_src,roomid1,nickname,is_show,online));
-                                adapter.notifyDataSetChanged();
-                            } catch (Exception e) {
+            if(roomid1.startsWith("1001")){
+                String douyuroomid = roomid1.substring(4);
+                //获取斗鱼房间信息
+                StringRequest stringRequest = new StringRequest("https://m.douyu.com/html5/live?roomId=" + douyuroomid,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    String data1 = jsonObject.getString("data");
+                                    JSONObject jsonObject1 = new JSONObject(data1);
+                                    String vertical_src = jsonObject1.getString("vertical_src");
+                                    int online = jsonObject1.getInt("online");
+                                    int show_status = jsonObject1.getInt("show_status");
+                                    Boolean is_show = false;
+                                    if (1==show_status){
+                                        is_show = true;
+                                    }else{
+                                        is_show = false;
+                                    }
+                                    String nickname = jsonObject1.getString("nickname");
+
+                                    itemList.add(new favorite_item(vertical_src,roomid1,nickname,is_show,online));
+                                    adapter.notifyDataSetChanged();
+                                } catch (Exception e) {
+
+                                }
 
                             }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
 
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
+                    }
+                });
+                requestQueue.add(stringRequest);
+            }else if(roomid1.startsWith("1002")){
 
-                }
-            });
-            requestQueue.add(stringRequest);
+            }
+
         }
 
-
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
-
-        //第一列单独占一行
-        /*
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return (position == 0) ? gridLayoutManager.getSpanCount() : 1;
-            }
-        });
-        */
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
 

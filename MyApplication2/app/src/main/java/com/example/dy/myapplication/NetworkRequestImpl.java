@@ -1,5 +1,6 @@
 package com.example.dy.myapplication;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -109,4 +112,65 @@ public class NetworkRequestImpl {
         return builder.toString().toLowerCase();
     }
 
+    public void getPandaStream(final int roomId, final UrlListener urlListener){
+        String url = "http://api.homer.panda.tv/chatroom/getinfo?roomid="+roomId;
+        //获取roominfo
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String data1 = jsonObject.getString("data");
+                    JSONObject jsonObject1 = new JSONObject(data1);
+                    final String ts = jsonObject1.getString("ts");
+                    final String sign = jsonObject1.getString("sign");
+                    final String rid = jsonObject1.getString("rid");
+                    String api_url = "http://www.panda.tv/api_room_v2?roomid="+roomId+"&_="+ts;
+                    System.out.println("pandaurl:"+api_url);
+                    //获取room_key
+                    RequestQueue mRequestQueue1 = Volley.newRequestQueue(mContext);
+                    StringRequest request1 = new StringRequest(Request.Method.GET, api_url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                String data1 = jsonObject.getString("data");
+                                //System.out.println("pandaurl:"+data1);
+                                jsonObject = new JSONObject(data1);
+                                String videoinfo = jsonObject.getString("videoinfo");
+                                //System.out.println("videoinfo:"+videoinfo);
+                                jsonObject = new JSONObject(videoinfo);
+                                String roomkey = jsonObject.getString("room_key");
+                                //System.out.println("room_key:"+roomkey);
+                                String plflag = jsonObject.getString("plflag");
+                                String plflag1 = plflag.split("_")[1];
+
+                                String live_url = "http://pl"+plflag1+".live.panda.tv/live_panda/"+roomkey+".flv?sign="+sign+"&time=&ts="+ts+"&rid="+rid;
+                                System.out.println("livepandaurl:"+live_url);
+                                urlListener.onSuccess(live_url);
+                            }catch(Exception e){
+                                urlListener.onError();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            urlListener.onError();
+                        }
+                    });
+                    mRequestQueue1.add(request1);
+
+                }catch (Exception e){
+                    urlListener.onError();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                urlListener.onError();
+            }
+        });
+        mRequestQueue.add(request);
+    }
 }

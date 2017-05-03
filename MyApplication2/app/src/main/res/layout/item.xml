@@ -4,14 +4,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp"
     android:padding="2dp">
 
-    <android.support.v7.widget.CardView
-        android:clickable="false"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/image1"
             android:layout_width="match_parent"
@@ -60,6 +57,6 @@
                 android:layout_alignParentBottom="true"
                 android:background="#FFFFFF" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
 
 </RelativeLayout>

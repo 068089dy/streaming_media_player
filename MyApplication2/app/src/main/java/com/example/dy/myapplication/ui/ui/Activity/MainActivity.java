@@ -1,11 +1,13 @@
 package com.example.dy.myapplication.ui.ui.Activity;
 
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -15,6 +17,8 @@ import com.example.dy.myapplication.ui.ui.fragment.ClassifyFragment;
 import com.example.dy.myapplication.ui.ui.fragment.FavoriteFragment;
 import com.example.dy.myapplication.ui.ui.fragment.HeadFragment;
 import com.example.dy.myapplication.ui.ui.fragment.HeadPager.HeadPagerFragment;
+import com.example.dy.myapplication.ui.ui.fragment.MessageFragment;
+import com.example.dy.myapplication.ui.ui.fragment.SettingFragment;
 import com.example.dy.myapplication.util.share;
 
 import static com.example.dy.myapplication.common.data.FAVORITE_KEY;
@@ -26,13 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout m_frameLayout;
 
     public static MainActivity mainActivity;
-
+    Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         mainActivity = this;
         initview();
@@ -41,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initview(){
         m_frameLayout= (FrameLayout) findViewById(R.id.content);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("斗鱼");
         //mTextMessage = (TextView) findViewById(R.id.message);
 
         //通过fragments这个adapter还有index来替换帧布局中的内容
@@ -72,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
-
+                    toolbar.setTitle("斗鱼");
                     //通过fragments这个adapter还有index来替换帧布局中的内容
                     Fragment fragment = (Fragment) fragments.instantiateItem(m_frameLayout, 0);
                     //一开始将帧布局中 的内容设置为第一个
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_dashboard:
                     //mTextMessage.setText(R.string.title_dashboard);
+                    toolbar.setTitle("熊猫");
                     //通过fragments这个adapter还有index来替换帧布局中的内容
                     Fragment fragment1 = (Fragment) fragments.instantiateItem(m_frameLayout, 1);
                     //一开始将帧布局中 的内容设置为第一个
@@ -91,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_favorite:
 
                     //mTextMessage.setText(R.string.title_notifications);
+                    toolbar.setTitle("喜爱");
                     //通过fragments这个adapter还有index来替换帧布局中的内容
                     Fragment fragment2 = (Fragment) fragments.instantiateItem(m_frameLayout, 2);
                     //一开始将帧布局中 的内容设置为第一个
@@ -101,10 +111,21 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_notifications:
 
                     //mTextMessage.setText(R.string.title_notifications);
+                    toolbar.setTitle("消息");
                     //通过fragments这个adapter还有index来替换帧布局中的内容
-                    Fragment fragment3 = (Fragment) fragments.instantiateItem(m_frameLayout, 0);
+                    Fragment fragment3 = (Fragment) fragments.instantiateItem(m_frameLayout, 3);
                     //一开始将帧布局中 的内容设置为第一个
-                    fragments.setPrimaryItem(m_frameLayout, 0, fragment3);
+                    fragments.setPrimaryItem(m_frameLayout, 3, fragment3);
+                    fragments.finishUpdate(m_frameLayout);
+                    return true;
+                case R.id.navigation_setting:
+
+                    //mTextMessage.setText(R.string.title_notifications);
+                    toolbar.setTitle("设置");
+                    //通过fragments这个adapter还有index来替换帧布局中的内容
+                    Fragment fragment4 = (Fragment) fragments.instantiateItem(m_frameLayout, 4);
+                    //一开始将帧布局中 的内容设置为第一个
+                    fragments.setPrimaryItem(m_frameLayout, 4, fragment4);
                     fragments.finishUpdate(m_frameLayout);
                     return true;
             }
@@ -117,13 +138,14 @@ public class MainActivity extends AppCompatActivity {
     FragmentStatePagerAdapter fragments = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
         @Override
         public int getCount() {
-            return 3;
+            return 5;
         }
 
         //进行Fragment的初始化
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = null;
+
             switch (i) {
                 case 0:
                     fragment = new HeadFragment();
@@ -134,12 +156,23 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     fragment = new FavoriteFragment();
                     break;
+                case 3:
+                    fragment = new MessageFragment();
+                    break;
+                case 4:
+                    fragment = new SettingFragment();
+                    break;
                 default:
-                    new HeadPagerFragment();
+                    new ClassifyFragment();
+
                     break;
             }
+
             return fragment;
+
+
         }
+
     };
 
 

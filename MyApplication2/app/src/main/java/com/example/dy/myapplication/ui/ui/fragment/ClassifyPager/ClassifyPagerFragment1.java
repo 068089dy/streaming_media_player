@@ -1,20 +1,15 @@
-package com.example.dy.myapplication.ui.ui.fragment.HeadPager;
+package com.example.dy.myapplication.ui.ui.fragment.ClassifyPager;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
-import com.example.dy.myapplication.ui.ui.view.*;
-
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,16 +19,19 @@ import com.android.volley.toolbox.Volley;
 import com.example.dy.myapplication.R;
 import com.example.dy.myapplication.item_and_adapter.Item;
 import com.example.dy.myapplication.item_and_adapter.Item_Adapter;
+import com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class HeadPagerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+/**
+ * Created by dy on 17-4-15.
+ */
 
+public class ClassifyPagerFragment1 extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private LoadMoreRecyclerView mRecyclerView;
     private Item_Adapter adapter;
     private List<Item> list = new ArrayList<Item>();
@@ -120,21 +118,29 @@ public class HeadPagerFragment extends Fragment implements SwipeRefreshLayout.On
 
     private void initdata(){
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        StringRequest request = new StringRequest("http://capi.douyucdn.cn/api/v1/live?&limit=20",
+        StringRequest request = new StringRequest("http://www.panda.tv/ajax_sort?token=&pageno=1&pagenum=120&classification=overwatch&_=1492344568373",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String data1 = jsonObject.getString("data");
-                            JSONArray jsonArray = new JSONArray(data1);
+                            jsonObject = new JSONObject(data1);
+                            String items = jsonObject.getString("items");
+                            //String pictures = jsonObject.getString("pictures");
+
+                            JSONArray jsonArray = new JSONArray(items);
                             for(int i = 0;i<jsonArray.length();i++){
                                 JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
-
-                                String douyuroomid = "1001" +jsonObject1.getString("room_id");
-                                System.out.println("douyu"+douyuroomid);
-                                list.add(new Item(jsonObject1.getString("vertical_src"),douyuroomid,jsonObject1.getString("nickname"),jsonObject1.getInt("online")));
+                                String id = jsonObject1.getString("id");
+                                String name = jsonObject1.getString("name");
+                                int person_num = Integer.parseInt(jsonObject1.getString("person_num"));
+                                String pictures = jsonObject1.getString("pictures");
+                                JSONObject picture = new JSONObject(pictures);
+                                String img = picture.getString("img");
+                                list.add(new Item(img, "1002"+id, name, person_num));
                                 adapter.notifyDataSetChanged();
+
                             }
 
                         }catch(Exception e){
@@ -153,23 +159,32 @@ public class HeadPagerFragment extends Fragment implements SwipeRefreshLayout.On
     private void add_data(){
 
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        StringRequest request = new StringRequest("http://capi.douyucdn.cn/api/v1/live?&limit="+add_data_num*20,
+        StringRequest request = new StringRequest("http://www.panda.tv/ajax_sort?token=&pageno="+add_data_num+"&pagenum=120&classification=overwatch&_=1492344568373",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String data1 = jsonObject.getString("data");
-                            JSONArray jsonArray = new JSONArray(data1);
+                            jsonObject = new JSONObject(data1);
+                            String items = jsonObject.getString("items");
+                            //String pictures = jsonObject.getString("pictures");
+
+                            JSONArray jsonArray = new JSONArray(items);
                             for(int i = 0;i<jsonArray.length();i++){
                                 JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
-                                //System.out.println(jsonObject1.getString("room_id"));
-                                String douyuroomid = "1001" +jsonObject1.getString("room_id");
-                                System.out.println("douyu"+douyuroomid);
+                                String id = jsonObject1.getString("id");
+                                String name = jsonObject1.getString("name");
+                                int person_num = Integer.parseInt(jsonObject1.getString("person_num"));
+                                String pictures = jsonObject1.getString("pictures");
+                                JSONObject picture = new JSONObject(pictures);
+                                String img = picture.getString("img");
+
+                                System.out.println(jsonObject1.getString("id"));
                                 if(i<list.size()){
 
                                 }else {
-                                    list.add(new Item(jsonObject1.getString("vertical_src"), douyuroomid, jsonObject1.getString("nickname"), jsonObject1.getInt("online")));
+                                    list.add(new Item(img, "1002"+id, name, person_num));
                                 }
                                 //adapter = new Item_Adapter(view.getContext(),list,mRecyclerView);
                                 //mRecyclerView.setAdapter(adapter);
@@ -193,4 +208,5 @@ public class HeadPagerFragment extends Fragment implements SwipeRefreshLayout.On
         requestQueue.add(request);
         add_data_num++;
     }
+
 }

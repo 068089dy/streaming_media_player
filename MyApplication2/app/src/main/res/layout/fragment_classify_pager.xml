@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe_ly1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView
+            android:id="@+id/RecyclerView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:scrollbars="vertical"
+            >
+        </com.example.dy.myapplication.ui.ui.view.LoadMoreRecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

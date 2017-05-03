@@ -42,6 +42,13 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:background="#7e424242"
+        android:layout_height="?attr/actionBarSize"
+        app:title="斗鱼"
+        app:layout_collapseMode="pin"/>
         <FrameLayout
             android:layout_weight="1"
             android:layout_width="match_parent"

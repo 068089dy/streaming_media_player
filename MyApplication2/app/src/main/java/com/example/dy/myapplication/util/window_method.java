@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.dy.myapplication.R;
@@ -66,6 +67,13 @@ public class window_method {
     public void createDesktopLayout() {
         mDesktopLayout = new DesktopLayout(activity);
         upVideoView = (UpVideoView) mDesktopLayout.findViewById(R.id.window_video);
+        ImageView window_video_close = (ImageView) mDesktopLayout.findViewById(R.id.window_video_close);
+        window_video_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeDesk();
+            }
+        });
         upVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +82,7 @@ public class window_method {
                 activity.startActivity(intent);
             }
         });
+
         mDesktopLayout.setOnTouchListener(new View.OnTouchListener() {
             float mTouchStartX;
             float mTouchStartY;
@@ -85,40 +94,51 @@ public class window_method {
                 Log.i("startP", "startX" + mTouchStartX + "====startY"
                         + mTouchStartY);
                 switch (event.getAction()) {
+
                     case MotionEvent.ACTION_DOWN:
                         // 获取相对View的坐标，即以此View左上角为原点
                         mTouchStartX = event.getX();
                         mTouchStartY = event.getY();
                         Log.i("startP", "startX" + mTouchStartX + "====startY"
                                 + mTouchStartY);
+                        /*
                         long end = System.currentTimeMillis() - startTime;
                         // 双击的间隔在 300ms以下
                         if (end < 300) {
                             closeDesk();
                         }
+                        */
                         startTime = System.currentTimeMillis();
 
                         break;
+
                     case MotionEvent.ACTION_MOVE:
                         // 更新浮动窗口位置参数
                         mLayout.x = (int) (x - mTouchStartX);
                         mLayout.y = (int) (y - mTouchStartY);
                         mWindowManager.updateViewLayout(v, mLayout);
                         break;
+
                     case MotionEvent.ACTION_UP:
+                        /*
                         // 更新浮动窗口位置参数
                         mLayout.x = (int) (x - mTouchStartX);
                         mLayout.y = (int) (y - mTouchStartY);
                         mWindowManager.updateViewLayout(v, mLayout);
                         // 可以在此记录最后一次的位置
                         mTouchStartX = mTouchStartY = 0;
-                        /*
-                        Intent intent = new Intent(activity, IdcardActivity.class);
-                        intent.putExtra("roomid",roomid);
-                        activity.startActivity(intent);
-                        closeDesk();
                         */
+                        long end1 = System.currentTimeMillis() - startTime;
+                        // 双击的间隔在 300ms以下
+                        if (end1 < 100) {
+                            Intent intent = new Intent(activity, IdcardActivity.class);
+                            intent.putExtra("roomid",roomid);
+                            activity.startActivity(intent);
+                            closeDesk();
+                        }
+
                         break;
+
                 }
                 return true;
             }
@@ -156,7 +176,7 @@ public class window_method {
     public void createWindowManager() {
         // 取得系统窗体
         mWindowManager = (WindowManager) activity.getApplicationContext()
-                .getSystemService("window");
+                .getSystemService(Context.WINDOW_SERVICE);
         // 窗体的布局样式
         mLayout = new WindowManager.LayoutParams();
         // 设置窗体显示类型——TYPE_SYSTEM_ALERT(系统提示)

@@ -21,8 +21,17 @@ import com.example.dy.myapplication.ui.ui.fragment.HeadPager.HeadPagerFragment2;
  */
 
 public class HeadFragment extends Fragment {
-
-    private String[] mTitle = {"推荐","守望先锋","h1z1"};
+    /*
+    * 1.lol
+    * 2.how
+    * 3.dota2
+    * 148.ow
+    * 33.cf
+    * 6.csgo
+    * 175.music
+    *
+    * */
+    private String[] mTitle = {"推荐","守望先锋","音乐"};
     private ContentPagerAdapter contentPagerAdapter;
     private TabLayout mTabLayout;
     private ViewPager mviewPager;
@@ -72,13 +81,13 @@ public class HeadFragment extends Fragment {
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return new HeadPagerFragment2();
+                    return new HeadPagerFragment();
 
                 case 1:
                     return new HeadPagerFragment1();
 
                 case 2:
-                    return new HeadPagerFragment();
+                    return new HeadPagerFragment2();
 
                 default:
                     return null;

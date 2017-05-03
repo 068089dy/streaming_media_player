@@ -76,24 +76,6 @@ public class favorite_item_adapter extends RecyclerView.Adapter<favorite_item_ad
 
             }
         });
-        //图片设置
-        /*
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        ImageRequest imageRequest = new ImageRequest(list.get(position).getImageSrc(),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        holder.roomSrc.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        }
-        );
-        requestQueue.add(imageRequest);
-        */
         Glide.with(context)
                 .load(list.get(position).getImageSrc())
                 .placeholder(R.drawable.douyu_loading)

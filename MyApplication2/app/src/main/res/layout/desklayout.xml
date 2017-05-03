@@ -3,13 +3,31 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="双击关闭"/>-->
-    <com.upyun.upplayer.widget.UpVideoView
+    <RelativeLayout
         android:layout_width="160dp"
-        android:layout_height="90dp"
-        android:id="@+id/window_video"
+        android:layout_height="90dp">
+
+
+        <com.upyun.upplayer.widget.UpVideoView
+            android:layout_width="160dp"
+            android:layout_height="90dp"
+            android:id="@+id/window_video"
         />
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="双击关闭"/>-->
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="20dp"
+        android:padding="3dp"
+        android:src="@drawable/close1"
+        android:id="@+id/window_video_close"
+        />
+        </RelativeLayout>
 </RelativeLayout>

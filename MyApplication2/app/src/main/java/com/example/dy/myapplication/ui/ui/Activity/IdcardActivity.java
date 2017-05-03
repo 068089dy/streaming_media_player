@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.dy.myapplication.NetworkRequestImpl;
 import com.example.dy.myapplication.R;
@@ -34,47 +35,79 @@ import static com.example.dy.myapplication.ui.ui.Activity.MainActivity.mainActiv
 import static com.example.dy.myapplication.util.share.*;
 
 public class IdcardActivity extends AppCompatActivity {
+
+    //视频播放器
     private UpVideoView upVideoView;
+
+    //主播介绍
     private MarkdownView tx_des;
+
+    //获取直播源接口
     NetworkRequestImpl mNetworkRequest;
+
+    //
     private RelativeLayout video_layout;
-    int roomid;
+
+    //房间号
+    long roomid;
+
+    //markdown风格
     private InternalStyleSheet mStyle = new Github();
 
+    //视频控制控件
     private ImageView im_play;
-
     private ImageView im_back;
     private ImageView im_resume;
     private ImageView im_full;
     private TextView tv_window;
     private ImageView im_favorite;
 
+    //是否喜爱
     Boolean is_favorite = false;
 
+    //视频控制控件界面
     private RelativeLayout onplay_layout;
+
+    //主播介绍cardview
     private CardView id_card_view;
 
-
+    //小窗口类
     private window_method window1;
 
+    //直播源地址
     String live_url;
+    private int visible;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_idcard);
         Intent intent = getIntent();
-        roomid = Integer.parseInt(intent.getStringExtra("roomid"));
-
+        roomid = Long.parseLong(intent.getStringExtra("roomid"));
+        System.out.println("douyuroomid:"+roomid);
         mNetworkRequest = new NetworkRequestImpl(this);
-        mNetworkRequest.getStreamUrl(roomid,urlListener);
+
+        //判断来自哪个直播平台
+        if(Long.toString(roomid).startsWith("1001")) {
+            String douyuroomid = Long.toString(roomid).substring(4);
+            System.out.println("douyuroomid:"+douyuroomid);
+            mNetworkRequest.getStreamUrl(Integer.parseInt(douyuroomid), urlListener);
+        }else if(Long.toString(roomid).startsWith("1002")){
+            String pandaroomid = Long.toString(roomid).substring(4);
+            mNetworkRequest.getPandaStream(Integer.parseInt(pandaroomid), pandaurlListener);
+        }
+        //初始化控件
         initview();
+        //控件事件
         viewevent();
     }
 
     private void initview(){
         upVideoView = (UpVideoView) findViewById(R.id.idcard_video);
         upVideoView.setImage(R.drawable.douyu_loading);
+        visible = View.VISIBLE;
+        upVideoView.selectTrack(10);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         video_layout = (RelativeLayout) findViewById(R.id.video_layout);
@@ -96,6 +129,8 @@ public class IdcardActivity extends AppCompatActivity {
                 "以上是15年7月的答案，发姐15年末去了上海，进入了新的环境，开始了新的生活。发姐还持续不断地产出着直播视频，但是因为我太懒，并不能整理上来了。。。更新一个15年的直播集锦，另外这个UP主也算是最近非常知名的逆子了：\n" +
                 "发姐，2015年部分精彩集锦第一集 发姐，2015年部分精彩集锦第二集 发姐，2015年部分精彩集锦第三集（全集）------------更新--------------\n" +
                 "讲真，15年末到现在（17年3月）发姐的精彩录像，萝叔叔毕竟还是敬业，内容详实丰富，如需入坑补档请看：萝菽菽的个人空间（ACFUN）萝菽菽的个人空间（Bilibili）另一个UP：加辣的个人空间（Bilibili）铁打的发姐流水的录像师傅，以前的录像师傅更替了很多，最近萝叔叔的投稿评论区被疯狂带节奏，不知道他还能坚持多久，毕竟A站药丸。另外，发姐歌唱事业迷之上升，《童话镇》网易热歌榜登顶，膨胀发能吹一辈子。歌曲链接：网易云音乐。-----------2017年3月更新--------A站药丸，很多发姐早期的视频都打不开了，暂时也没有特别好的补救措施，互联网内容爆炸但是又有很多内容没来得及保存就消失了，且看且珍惜。我现在只能给罗叔叔续一\n");
+
+        //视频播放控制
         im_back = (ImageView) findViewById(R.id.im_back);
         im_play = (ImageView) findViewById(R.id.im_play);
         im_resume = (ImageView) findViewById(R.id.im_resume);
@@ -103,13 +138,14 @@ public class IdcardActivity extends AppCompatActivity {
         tv_window = (TextView) findViewById(R.id.tv_window);
         im_favorite = (ImageView) findViewById(R.id.im_favorite);
 
+
         onplay_layout = (RelativeLayout) findViewById(R.id.onplay_layout);
         id_card_view = (CardView) findViewById(R.id.id_card_view);
 
         //判断是否关注
         Iterator<String> it = favoritelist.iterator();
         while(it.hasNext()){
-            if(it.next().equals(Integer.toString(roomid))){
+            if(it.next().equals(Long.toString(roomid))){
                 is_favorite = true;
                 im_favorite.setImageResource(R.drawable.favorite2);
             }
@@ -167,50 +203,21 @@ public class IdcardActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        /*
         im_full.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(upVideoView.isFullState()){
                     id_card_view.setVisibility(View.VISIBLE);
-                    //upVideoView.exitFullScreen(IdcardActivity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }else {
-
                     id_card_view.setVisibility(View.GONE);
-                    //upVideoView.fullScreen(IdcardActivity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-                    /*
-                    id_card_view.setVisibility(View.GONE);
-
-                    int screenWidth;//屏幕宽度
-                    int screenHeight;//屏幕高度
-                    WindowManager windowManager = getWindowManager();
-                    Display display = windowManager.getDefaultDisplay();
-                    screenWidth = display.getWidth();
-                    screenHeight = display.getHeight();
-                    System.out.println("屏幕高度"+display.getHeight());
-                    System.out.println("屏幕高度"+display.getWidth());
-
-                    upVideoView.setMinimumHeight(screenHeight);
-                    upVideoView.setMinimumWidth(screenWidth);
-
-                    upVideoView.fullScreen(IdcardActivity.this);
-
-                }
-                */
-                /*
-                upVideoView.pause();
-                Intent intent = new Intent(IdcardActivity.this,FullScreenActivity.class);
-                intent.putExtra("url",live_url);
-                startActivity(intent);
-                */
                 }
             }
         });
-
+        */
         im_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,8 +225,8 @@ public class IdcardActivity extends AppCompatActivity {
 
                 }else{
                     im_favorite.setImageResource(R.drawable.favorite2);
-                    favoritelist.add(Integer.toString(roomid));
-                    putString(mainActivity,FAVORITE_KEY, share.getString(mainActivity,FAVORITE_KEY)+Integer.toString(roomid)+"|");
+                    favoritelist.add(Long.toString(roomid));
+                    putString(mainActivity,FAVORITE_KEY, share.getString(mainActivity,FAVORITE_KEY)+Long.toString(roomid)+"|");
                     is_favorite = true;
                 }
             }
@@ -232,7 +239,26 @@ public class IdcardActivity extends AppCompatActivity {
         @Override
         public void onSuccess(String url) {
             live_url = url;
-            window1 = new window_method(IdcardActivity.this,live_url,Integer.toString(roomid));
+            window1 = new window_method(IdcardActivity.this,live_url,Long.toString(roomid));
+            window1.createWindowManager();
+            window1.createDesktopLayout();
+            System.out.println("直播live:"+url);
+            upVideoView.setVideoPath(url);
+            upVideoView.start();
+        }
+
+        @Override
+        public void onError() {
+            Toast.makeText(IdcardActivity.this,"播放出错",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    };
+
+    private UrlListener pandaurlListener = new UrlListener() {
+        @Override
+        public void onSuccess(String url) {
+            live_url = url;
+            window1 = new window_method(IdcardActivity.this,live_url,Long.toString(roomid));
             window1.createWindowManager();
             window1.createDesktopLayout();
             System.out.println("直播live:"+url);
